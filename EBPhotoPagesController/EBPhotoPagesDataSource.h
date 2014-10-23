@@ -131,9 +131,6 @@ shouldAllowReportForPhotoAtIndex:(NSInteger)index;
     shouldAllowActivitiesForPhotoAtIndex:(NSInteger)index;
 
 
-#pragma mark - Misc Button (DotDotDot button)
-
-- (BOOL)photoPagesController:(EBPhotoPagesController *)photoPagesController shouldAllowMiscActionsForPhotoAtIndex:(NSInteger)index;
 
 
 #pragma mark - Tag Create, Read, Delete

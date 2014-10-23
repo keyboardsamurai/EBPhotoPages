@@ -75,7 +75,7 @@ static NSString *ImageKeyPath = @"image";
     [self.imageView setContentMode:UIViewContentModeScaleAspectFit];
     [self setClipsToBounds:NO];
     [self.imageView setClipsToBounds:NO];
-    [self setMaximumZoomScale:5.0];
+    [self setMaximumZoomScale:1.0];
     [self setShowsHorizontalScrollIndicator:NO];
     [self setShowsVerticalScrollIndicator:NO];
 
