@@ -415,8 +415,8 @@
 
 - (CGSize)paddingForBarButtonCustomViewText
 {
-    const CGFloat DefaultWidthPadding = 18;
-    const CGFloat DefaultHeightPadding = 0;
+    const CGFloat DefaultWidthPadding = 30;
+    const CGFloat DefaultHeightPadding = 30;
     return CGSizeMake(DefaultWidthPadding, DefaultHeightPadding);
 }
 
