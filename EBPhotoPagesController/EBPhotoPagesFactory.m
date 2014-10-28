@@ -213,7 +213,7 @@
 
 - (NSString *)doneBarButtonTitleForPhotoPagesController:(EBPhotoPagesController *)controller;
 {
-    return NSLocalizedString(@"Done", @"Appears on a button that exits you from a photo browser.");
+    return NSLocalizedString(@"Schließen", @"Appears on a button that exits you from a photo browser.");
 }
 
 - (NSString *)cancelBarButtonTitleForPhotoPagesController:(EBPhotoPagesController *)controller;

@@ -56,7 +56,7 @@ static NSString *kActionSheetIndexKey= @"actionSheetTargetIndex";
 @property (strong) NSOperationQueue *photoLoadingQueue;
 
 @property (assign) NSInteger currentPhotoIndex;
-
+                                                              7
 @end
 
 #pragma mark -
@@ -324,8 +324,8 @@ static NSString *kActionSheetIndexKey= @"actionSheetTargetIndex";
     NSAssert(self.photoPagesFactory, @"Photo Pages Controller must have a factory object to build UI Components.");
     [self loadInitialPageWithIndex:self.currentPhotoIndex];
     [self setCaptionWithPhotoIndex:self.currentPhotoIndex];
-    [self loadUpperGradient];
-    [self loadLowerGradient];
+//    [self loadUpperGradient];
+//    [self loadLowerGradient];
     [self loadScreenDimmer];
     [self loadUpperToolbar];
     [self loadLowerToolbar];
