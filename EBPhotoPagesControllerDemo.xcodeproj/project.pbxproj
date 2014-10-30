@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1BF9A10570A9A899FEC3C4F2 /* UIImage+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BF9A05148EA6D096A77CF88 /* UIImage+Extras.m */; };
 		641E9D2018EC3DF700763096 /* megdraws.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 641E9D1118EC3DF700763096 /* megdraws.jpg */; };
 		641E9D2118EC3DF700763096 /* karsh.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 641E9D1218EC3DF700763096 /* karsh.jpg */; };
 		641E9D2218EC3DF700763096 /* liang.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 641E9D1318EC3DF700763096 /* liang.jpg */; };
@@ -99,6 +100,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1BF9A05148EA6D096A77CF88 /* UIImage+Extras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Extras.m"; sourceTree = "<group>"; };
+		1BF9AFE780E21B9554E754FE /* UIImage+Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Extras.h"; sourceTree = "<group>"; };
 		641E9D1118EC3DF700763096 /* megdraws.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = megdraws.jpg; sourceTree = "<group>"; };
 		641E9D1218EC3DF700763096 /* karsh.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = karsh.jpg; sourceTree = "<group>"; };
 		641E9D1318EC3DF700763096 /* liang.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = liang.jpg; sourceTree = "<group>"; };
@@ -420,6 +423,8 @@
 				8583A59D180230D500D694A5 /* Caption */,
 				8583A59C180230C300D694A5 /* Tags */,
 				8583A59B180230AF00D694A5 /* Comments */,
+				1BF9A05148EA6D096A77CF88 /* UIImage+Extras.m */,
+				1BF9AFE780E21B9554E754FE /* UIImage+Extras.h */,
 			);
 			name = EBPhotoPagesController;
 			sourceTree = "<group>";
@@ -654,6 +659,7 @@
 				8583A58A18022E1400D694A5 /* EBPhotoPagesFactory.m in Sources */,
 				8583A54118022D3800D694A5 /* DEMOAppDelegate.m in Sources */,
 				8583A58818022E1400D694A5 /* EBCommentsView.m in Sources */,
+				1BF9A10570A9A899FEC3C4F2 /* UIImage+Extras.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

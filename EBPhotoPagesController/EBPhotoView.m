@@ -19,6 +19,7 @@
 #import "EBPhotoTagProtocol.h"
 #import "EBShadedView.h"
 #import "EBPhotoPagesNotifications.h"
+#import "UIImage+Extras.h"
 
 
 static NSString *PhotoFrameKeyPath = @"frame";
@@ -68,7 +69,7 @@ static NSString *ImageKeyPath = @"image";
     [self setShowsHorizontalScrollIndicator:NO];
     [self setBouncesZoom:YES];
     [self setDecelerationRate:UIScrollViewDecelerationRateFast];
-    
+
     [self setAlpha:0];
     [self setImageView:[[UIImageView alloc] initWithFrame:self.bounds]];
     [self addSubview:self.imageView];
@@ -80,13 +81,13 @@ static NSString *ImageKeyPath = @"image";
     [self setShowsVerticalScrollIndicator:NO];
 
     [self setBackgroundColor:[UIColor clearColor]];
-    
+
     [self setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
-    
+
     [self setAdjustsContentModeForImageSize:YES];
-    
+
     [self loadTouchGestureRecognizers];
-    
+
     [self beginObservations];
 }
 
@@ -101,7 +102,7 @@ static NSString *ImageKeyPath = @"image";
 {
     NSAssert(self.imageView, @"Must have an imageview to observe.");
     [self.imageView addObserver:self forKeyPath:PhotoFrameKeyPath options:NSKeyValueObservingOptionNew context:nil];
-    
+
     [self.imageView addObserver:self forKeyPath:ImageKeyPath options:NSKeyValueObservingOptionNew context:nil];
 }
 
@@ -130,7 +131,7 @@ static NSString *ImageKeyPath = @"image";
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    
+
     //This will immediately stop any animations the image view is doing.
     [UIView animateWithDuration:0
                           delay:0
@@ -138,55 +139,55 @@ static NSString *ImageKeyPath = @"image";
                      animations:^{
                          [self.layer setAffineTransform:CGAffineTransformMakeScale(1, 1)];
                      }completion:nil];
-    
+
     if (![self isZoomed] && !CGRectEqualToRect(self.bounds, [self.imageView frame])) {
         [self.imageView setFrame:self.bounds];
         return;
     }
-    
+
     // center the zoom view as it becomes smaller than the size of the screen
     CGSize boundsSize = self.bounds.size;
     CGRect frameToCenter = self.imageView.frame;
-    
-    
+
+
     // center horizontally
     if (frameToCenter.size.width < boundsSize.width)
         frameToCenter.origin.x = (boundsSize.width - frameToCenter.size.width) / 2;
     else
         frameToCenter.origin.x = 0;
-    
+
     // center vertically
     if (frameToCenter.size.height < boundsSize.height)
         frameToCenter.origin.y = (boundsSize.height - frameToCenter.size.height) / 2;
     else
         frameToCenter.origin.y = 0;
-    
+
     self.imageView.frame = frameToCenter;
-    
+
     [self setContentModeForImageSize:self.imageView.image.size];
 }
 
 #pragma mark - Loading
 
 - (void)loadTouchGestureRecognizers
-{    
+{
     UITapGestureRecognizer *singleTapRecognizer = [[UITapGestureRecognizer alloc]
-                                                   initWithTarget:self action:@selector(didRecognizeSingleTap:)];
+            initWithTarget:self action:@selector(didRecognizeSingleTap:)];
     [singleTapRecognizer setNumberOfTapsRequired:1];
     [self addGestureRecognizer:singleTapRecognizer];
-    
-    
+
+
     UITapGestureRecognizer *doubleTapGesture = [[UITapGestureRecognizer alloc]
-                                                initWithTarget:self
-                                                action:@selector(didRecognizeDoubleTap:)];
+            initWithTarget:self
+                    action:@selector(didRecognizeDoubleTap:)];
     [doubleTapGesture setNumberOfTapsRequired:2];
     [self addGestureRecognizer:doubleTapGesture];
-    
+
     UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc]
-                                              initWithTarget:self
-                                              action:@selector(didRecognizeLongPress:)];
+            initWithTarget:self
+                    action:@selector(didRecognizeLongPress:)];
     [self addGestureRecognizer:longPressGesture];
-    
+
     [singleTapRecognizer requireGestureRecognizerToFail:doubleTapGesture];
 }
 
@@ -195,16 +196,16 @@ static NSString *ImageKeyPath = @"image";
 - (void)didRecognizeSingleTap:(id)sender
 {
     NSAssert([sender isKindOfClass:[UITapGestureRecognizer class]], @"Expected notification from a single tap gesture");
-    
+
     UITapGestureRecognizer *tapGesture = sender;
-    
+
     CGPoint touchPoint = [tapGesture locationInView:self];
     CGPoint normalizedTapLocation = [self normalizedPositionForPoint:touchPoint
                                                              inFrame:[self frameForPhoto]];
-    
+
     NSDictionary *tapInfo = @{@"touchGesture" : sender,
-                              @"normalizedTapLocation" : [NSValue valueWithCGPoint:normalizedTapLocation]};
-    
+            @"normalizedTapLocation" : [NSValue valueWithCGPoint:normalizedTapLocation]};
+
     [[NSNotificationCenter defaultCenter] postNotificationName:EBPhotoViewSingleTapNotification
                                                         object:self
                                                       userInfo:tapInfo];
@@ -213,15 +214,15 @@ static NSString *ImageKeyPath = @"image";
 - (void)didRecognizeDoubleTap:(id)sender
 {
     NSAssert([sender isKindOfClass:[UITapGestureRecognizer class]], @"Expected notification from a double tap gesture");
-    
+
     UITapGestureRecognizer *tap = sender;
-    
+
     CGPoint touchPoint = [tap locationInView:self];
     CGPoint normalizedTapLocation = [self normalizedPositionForPoint:touchPoint
                                                              inFrame:[self frameForPhoto]];
-    
+
     NSDictionary *tapInfo = @{@"touchGesture" : sender,
-                              @"normalizedTapLocation" : [NSValue valueWithCGPoint:normalizedTapLocation]};
+            @"normalizedTapLocation" : [NSValue valueWithCGPoint:normalizedTapLocation]};
     [[NSNotificationCenter defaultCenter] postNotificationName:EBPhotoViewDoubleTapNotification
                                                         object:self
                                                       userInfo:tapInfo];
@@ -230,40 +231,40 @@ static NSString *ImageKeyPath = @"image";
 - (void)didRecognizeLongPress:(id)sender
 {
     NSAssert([sender isKindOfClass:[UILongPressGestureRecognizer class]], @"Expected notification from a long press gesture");
-    
+
     UILongPressGestureRecognizer *longPressGesture = sender;
     if (longPressGesture.state == UIGestureRecognizerStateBegan){
         CGPoint touchPoint = [longPressGesture locationInView:self];
         CGPoint normalizedTapLocation = [self normalizedPositionForPoint:touchPoint
                                                                  inFrame:[self frameForPhoto]];
-        
+
         NSDictionary *tapInfo = @{@"touchGesture" : longPressGesture,
-                                  @"normalizedTapLocation" : [NSValue valueWithCGPoint:normalizedTapLocation]};
-        
+                @"normalizedTapLocation" : [NSValue valueWithCGPoint:normalizedTapLocation]};
+
         [[NSNotificationCenter defaultCenter] postNotificationName:EBPhotoViewLongPressNotification
                                                             object:self
                                                           userInfo:tapInfo];
     }
-    
+
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [super touchesEnded:touches withEvent:event];
-    
+
     if(self.imageView.image == nil){
         return;
     }
-    
+
     for(UITouch *touch in touches){
         if([touch tapCount] == 1){
             CGPoint screenTouchPoint = [touch locationInView:self];
             CGPoint normalizedPoint = [self normalizedPositionForPoint:screenTouchPoint
                                                                inFrame:[self frameForPhoto]];
             NSDictionary *touchInfo =
-                @{@"screenTouchPoint": [NSValue valueWithCGPoint:screenTouchPoint],
-                  @"normalizedPointInPhoto" : [NSValue valueWithCGPoint:normalizedPoint]};
-            
+                    @{@"screenTouchPoint": [NSValue valueWithCGPoint:screenTouchPoint],
+                            @"normalizedPointInPhoto" : [NSValue valueWithCGPoint:normalizedPoint]};
+
             [[NSNotificationCenter defaultCenter] postNotificationName:EBPhotoViewTouchDidEndNotification
                                                                 object:self
                                                               userInfo:touchInfo];
@@ -283,7 +284,8 @@ static NSString *ImageKeyPath = @"image";
                      animations:^{
                          [self.imageView setAlpha:1];
                      }completion:nil];
-    
+
+    image = [image imageByScalingProportionallyToSize:CGSizeMake(1024,768)];
     [self setContentModeForImageSize:image.size];
     [self.imageView setImage:image];
 }
@@ -294,15 +296,15 @@ static NSString *ImageKeyPath = @"image";
         [self.imageView setContentMode:UIViewContentModeScaleAspectFit];
         return;
     }
-    
+
     UIViewContentMode newContentMode;
     if((size.height < self.imageView.bounds.size.height) &&
-       (size.width  < self.imageView.bounds.size.width ) ){
+            (size.width  < self.imageView.bounds.size.width ) ){
         newContentMode = UIViewContentModeCenter;
     } else {
         newContentMode = UIViewContentModeScaleAspectFit;
     }
-    
+
     if(self.imageView.contentMode != newContentMode){
         [self.imageView setContentMode:newContentMode];
     }
@@ -313,15 +315,15 @@ static NSString *ImageKeyPath = @"image";
 - (void)startNewTagPopover:(EBTagPopover *)popover atNormalizedPoint:(CGPoint)normalizedPoint
 {
     NSAssert(((normalizedPoint.x >= 0.0 && normalizedPoint.x <= 1.0) &&
-              (normalizedPoint.y >= 0.0 && normalizedPoint.y <= 1.0)),
-             @"Point is outside of photo.");
-    
+            (normalizedPoint.y >= 0.0 && normalizedPoint.y <= 1.0)),
+            @"Point is outside of photo.");
+
     CGRect photoFrame = [self frameForPhoto];
-    
+
     CGPoint tagLocation =
-    CGPointMake(photoFrame.origin.x + (photoFrame.size.width * normalizedPoint.x),
-                photoFrame.origin.y + (photoFrame.size.height * normalizedPoint.y));
-    
+            CGPointMake(photoFrame.origin.x + (photoFrame.size.width * normalizedPoint.x),
+                    photoFrame.origin.y + (photoFrame.size.height * normalizedPoint.y));
+
     [popover presentPopoverFromPoint:tagLocation inView:self animated:YES];
     [popover setNormalizedArrowPoint:normalizedPoint];
     [popover becomeFirstResponder];
@@ -345,23 +347,23 @@ static NSString *ImageKeyPath = @"image";
     [UIView animateWithDuration:(duration*0.5)
                           delay:0
                         options:UIViewAnimationOptionCurveEaseIn|
-     UIViewAnimationOptionAllowUserInteraction|
-     UIViewAnimationOptionBeginFromCurrentState
+                                UIViewAnimationOptionAllowUserInteraction|
+                                UIViewAnimationOptionBeginFromCurrentState
                      animations:^{
                          CGFloat scaleAmount = self.isZoomed ? scale : -scale;
                          [self.layer setAffineTransform:CGAffineTransformMakeScale(1+scaleAmount,
-                                                                                   1+scaleAmount)];
+                                 1+scaleAmount)];
                      } completion:^(BOOL finished){
-                         [UIView animateWithDuration:(duration*0.5)
-                                               delay:0
-                                             options:UIViewAnimationOptionCurveEaseOut|
-                          UIViewAnimationOptionAllowUserInteraction|
-                          UIViewAnimationOptionBeginFromCurrentState
-                                          animations:^{
-                                              [self.layer setAffineTransform:CGAffineTransformMakeScale(1.0, 1.0)];
-                                          }completion:nil];
-                     }];
-    
+                [UIView animateWithDuration:(duration*0.5)
+                                      delay:0
+                                    options:UIViewAnimationOptionCurveEaseOut|
+                                            UIViewAnimationOptionAllowUserInteraction|
+                                            UIViewAnimationOptionBeginFromCurrentState
+                                 animations:^{
+                                     [self.layer setAffineTransform:CGAffineTransformMakeScale(1.0, 1.0)];
+                                 }completion:nil];
+            }];
+
 }
 
 - (void)zoomToPoint:(CGPoint)point
@@ -369,7 +371,7 @@ static NSString *ImageKeyPath = @"image";
     if(self.imageView.image == nil){
         return;
     }
-    
+
     CGRect zoomRect = self.isZoomed ? [self bounds] : [self zoomRectForScale:self.maximumZoomScale
                                                                   withCenter:point];
     [self zoomToRect:zoomRect animated:YES];
@@ -378,22 +380,22 @@ static NSString *ImageKeyPath = @"image";
 - (CGRect)zoomRectForScale:(float)scale withCenter:(CGPoint)center
 {
     CGRect zoomRect = self.frame;
-    
+
     zoomRect.size.height /= scale;
     zoomRect.size.width /= scale;
-    
+
     //the origin of a rect is it's top left corner,
     //so subtract half the width and height of the rect from it's center point to get to that x,y
     zoomRect.origin.x = center.x - (zoomRect.size.width  / 2.0);
     zoomRect.origin.y = center.y - (zoomRect.size.height / 2.0);
-    
+
     return zoomRect;
 }
 
 - (void)repositionTags
 {
     CGRect newPhotoFrame = [self frameForPhoto];
-    
+
     for(EBTagPopover *popover in self.subviews){
         if([popover isKindOfClass:[EBTagPopover class]]){
             [popover repositionInRect:newPhotoFrame];
@@ -408,7 +410,7 @@ static NSString *ImageKeyPath = @"image";
     if(self.imageView.image == nil){
         return CGRectZero;
     }
-    
+
     CGRect photoDisplayedFrame;
     if(self.imageView.contentMode == UIViewContentModeScaleAspectFit){
         photoDisplayedFrame = AVMakeRectWithAspectRatioInsideRect(self.imageView.image.size, self.imageView.frame);
@@ -417,9 +419,9 @@ static NSString *ImageKeyPath = @"image";
         photoOrigin.x = (self.imageView.frame.size.width - (self.imageView.image.size.width * self.zoomScale)) * 0.5;
         photoOrigin.y = (self.imageView.frame.size.height - (self.imageView.image.size.height * self.zoomScale)) * 0.5;
         photoDisplayedFrame = CGRectMake(photoOrigin.x,
-                                         photoOrigin.y,
-                                         self.imageView.image.size.width*self.zoomScale,
-                                         self.imageView.image.size.height*self.zoomScale);
+                photoOrigin.y,
+                self.imageView.image.size.width*self.zoomScale,
+                self.imageView.image.size.height*self.zoomScale);
     } else {
         NSAssert(0, @"Don't know how to generate frame for photo with current content mode.");
     }
@@ -434,7 +436,7 @@ static NSString *ImageKeyPath = @"image";
             return popover;
         }
     }
-    
+
     return nil;
 }
 
@@ -442,7 +444,7 @@ static NSString *ImageKeyPath = @"image";
 - (BOOL)canTagPhotoAtNormalizedPoint:(CGPoint)normalizedPoint
 {
     if((normalizedPoint.x >= 0.0 && normalizedPoint.x <= 1.0) &&
-       (normalizedPoint.y >= 0.0 && normalizedPoint.y <= 1.0)){
+            (normalizedPoint.y >= 0.0 && normalizedPoint.y <= 1.0)){
         return YES;
     }
     return NO;
@@ -452,10 +454,10 @@ static NSString *ImageKeyPath = @"image";
 {
     point.x -= (frame.origin.x - self.frame.origin.x);
     point.y -= (frame.origin.y - self.frame.origin.y);
-    
+
     CGPoint normalizedPoint = CGPointMake(point.x / frame.size.width,
-                                          point.y / frame.size.height);
-    
+            point.y / frame.size.height);
+
     return normalizedPoint;
 }
 

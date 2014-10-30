@@ -39,7 +39,7 @@
 - (BOOL)canTagPhotoAtNormalizedPoint:(CGPoint)normalizedPoint;
 
 - (void)startNewTagPopover:(EBTagPopover *)popover
-        atNormalizedPoint:(CGPoint)normalizedPoint;
+         atNormalizedPoint:(CGPoint)normalizedPoint;
 
 
 - (void)zoomToPoint:(CGPoint)point;
