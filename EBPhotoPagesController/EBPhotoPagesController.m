@@ -56,7 +56,7 @@ static NSString *kActionSheetIndexKey= @"actionSheetTargetIndex";
 @property (strong) NSOperationQueue *photoLoadingQueue;
 
 @property (assign) NSInteger currentPhotoIndex;
-                                                              7
+
 @end
 
 #pragma mark -
