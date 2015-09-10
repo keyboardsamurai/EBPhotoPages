@@ -43,6 +43,8 @@
 
 @property (assign) BOOL commentsHidden;
 
+@property(nonatomic) BOOL isPresented;
+
 - (id)initWithDataSource:(id<EBPhotoPagesDataSource>)dataSource;
 
 - (id)initWithDataSource:(id<EBPhotoPagesDataSource>)dataSource photoAtIndex:(NSInteger)index;

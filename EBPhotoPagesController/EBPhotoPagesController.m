@@ -62,14 +62,19 @@ static NSString *kActionSheetIndexKey= @"actionSheetTargetIndex";
 #pragma mark -
 #pragma mark - EBPhotoPagesController
 
-@implementation EBPhotoPagesController
+@implementation EBPhotoPagesController {
+    BOOL isPresented;
+}
 
+
+@synthesize isPresented;
 
 - (id)init
 {
     self = [super init];
     if (self) {
         NSAssert(0, @"EBPhotoPageViewController must be initialized with a data source.");
+        isPresented = YES;
     }
     return self;
 }
@@ -1224,7 +1229,7 @@ static NSString *kActionSheetIndexKey= @"actionSheetTargetIndex";
     
 
     if(shouldDismiss){
-        
+        isPresented = NO;
         if([self.photoPagesDelegate respondsToSelector:
             @selector(photoPagesControllerWillDismiss:)]){
             [self.photoPagesDelegate photoPagesControllerWillDismiss:self];
