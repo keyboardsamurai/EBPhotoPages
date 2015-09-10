@@ -498,6 +498,7 @@ static NSString *kActionSheetIndexKey= @"actionSheetTargetIndex";
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    isPresented = YES;
     [self setStatusBarDisabled:YES withAnimation:animated];
 }
 
